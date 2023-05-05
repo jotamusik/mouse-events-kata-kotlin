@@ -4,7 +4,7 @@ import java.util.function.Consumer
 
 
 class Mouse {
-  private val listeners: MutableList<MouseEventListener> = ArrayList<MouseEventListener>()
+  private val listeners: MutableList<MouseEventListener> = mutableListOf()
   private val timeWindowInMillisecondsForDoubleClick: Long = 500
   fun pressLeftButton(currentTimeInMilliseconds: Long) {
     /*... implement this method ...*/
