@@ -6,15 +6,23 @@ import java.util.function.Consumer
 class Mouse {
   private val listeners: MutableList<MouseEventListener> = mutableListOf()
   private val timeWindowInMillisecondsForDoubleClick: Long = 500
+
+  private val mouseSignalChain: MutableList<Pair<String, Long>> = mutableListOf()
+
   fun pressLeftButton(currentTimeInMilliseconds: Long) {
-    /*... implement this method ...*/
+    mouseSignalChain.add(Pair("LeftButtonDown", currentTimeInMilliseconds))
   }
 
   fun releaseLeftButton(currentTimeInMilliseconds: Long) {
-    /*... implement this method ...*/
+    mouseSignalChain.add(Pair("LeftButtonUp", currentTimeInMilliseconds))
+    evaluateSignalChain()
   }
 
-  fun move(from: MousePointerCoordinates?, to: MousePointerCoordinates?, currentTimeInMilliseconds: Long) {
+  private fun evaluateSignalChain() {
+    notifySubscribers(MouseEventType.SingleClick)
+  }
+
+  fun move(from: Position, to: Position, currentTimeInMilliseconds: Long) {
     /*... implement this method ...*/
   }
 
@@ -23,6 +31,7 @@ class Mouse {
   }
 
   private fun notifySubscribers(eventType: MouseEventType) {
+    // To be change to RxKotlin
     listeners.forEach(Consumer<MouseEventListener> { listener: MouseEventListener ->
       listener.handleMouseEvent(
         eventType
