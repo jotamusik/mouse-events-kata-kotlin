@@ -2,22 +2,39 @@ package dev.kata.mouseeventkata
 
 import org.junit.jupiter.api.Test
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 internal class MouseEventKataShould {
-
-  private fun createMouseWithListener(mouseEventListener: MouseEventListener): Mouse {
-    return Mouse().also { it.subscribe(mouseEventListener) }
-  }
 
   @Test
   fun `send SingleClick event when the user press and then release the left button`() {
     val mouseListener = mock<MouseEventListener>()
-    val mouse = createMouseWithListener(mouseListener)
+    val mouse = Mouse.createWithListener(mouseListener)
 
-    mouse.pressLeftButton(0)
-    mouse.releaseLeftButton(0)
+    runBlocking {
+      mouse.pressLeftButton(0)
+      mouse.releaseLeftButton(0)
+      delay(600L)
+    }
+    verify(mouseListener, times(1)).handleMouseEvent(MouseEventType.SingleClick)
+  }
 
-    verify(mouseListener).handleMouseEvent(MouseEventType.SingleClick)
+  @Test
+  fun `send DoubleCLick event when the user press and then release the left button twice`() {
+    val mouseListener = mock<MouseEventListener>()
+    val mouse = Mouse.createWithListener(mouseListener)
+
+    runBlocking {
+      mouse.pressLeftButton(0)
+      mouse.releaseLeftButton(0)
+      mouse.pressLeftButton(0)
+      mouse.releaseLeftButton(0)
+      delay(600L)
+    }
+
+    verify(mouseListener, times(1)).handleMouseEvent(MouseEventType.DoubleClick)
   }
 }
