@@ -29,7 +29,8 @@ class Mouse {
   private fun evaluateSignalChain() {
     val event = when (mouseSignalChain.filter { it.first == "LeftButtonUp" }.size) {
       1 -> MouseEventType.SingleClick
-      else -> MouseEventType.DoubleClick
+      2 -> MouseEventType.DoubleClick
+      else -> MouseEventType.TripleClick
     }
     notifySubscribers(event)
   }

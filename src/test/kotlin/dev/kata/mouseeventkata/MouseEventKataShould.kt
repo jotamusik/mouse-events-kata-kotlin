@@ -37,4 +37,22 @@ internal class MouseEventKataShould {
 
     verify(mouseListener, times(1)).handleMouseEvent(MouseEventType.DoubleClick)
   }
+
+  @Test
+  fun `send TripleCLick event when the user press and then release the left button three times`() {
+    val mouseListener = mock<MouseEventListener>()
+    val mouse = Mouse.createWithListener(mouseListener)
+
+    runBlocking {
+      mouse.pressLeftButton(0)
+      mouse.releaseLeftButton(0)
+      mouse.pressLeftButton(0)
+      mouse.releaseLeftButton(0)
+      mouse.pressLeftButton(0)
+      mouse.releaseLeftButton(0)
+      delay(600L)
+    }
+
+    verify(mouseListener, times(1)).handleMouseEvent(MouseEventType.TripleClick)
+  }
 }
